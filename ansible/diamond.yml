@@ -1,7 +1,7 @@
 - hosts: all
   vars:
     graphite_host: localhost
-  user: vagrant
+  user: ec2_user
   sudo : yes
   tasks:
     - name : Install packages

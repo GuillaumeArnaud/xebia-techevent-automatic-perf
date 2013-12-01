@@ -4,14 +4,13 @@
   hosts : localhost
   connection : local
   vars:
-    - keyname: ansible
-    - count : 2
+    - keyname: garnaud
+    - count : 1
     - instance_names:
-      - graphite-1
-      - graphite-2
-    - instance_type: t1.micro
+      - techevents-perf
+    - instance_type: m1.small
     - group : accept-all
-    - ami : ami-c7c0d6b3 # Amazon Linux
+    - ami : ami-029f9476 # Centos 64 AMI
     - ec2_url : ec2.eu-west-1.amazonaws.com
     - region : eu-west-1
   gather_facts: False
@@ -39,7 +38,6 @@
     - name : Add new instance to host
       local_action : add_host name={{item.public_dns_name}} groups=graphite
       with_items: ec2.instances
-- include : graphite.yaml
-- include : diamond.yaml
+- include : diamond.yml
 
 
