@@ -1,0 +1,30 @@
+---
+# vagrant.yml
+- hosts: all
+  user: vagrant
+  sudo: True
+  tasks:
+#  - name: Update APT package cache
+#    apt: update_cache=yes
+  - name: Install packages
+    yum: name=$item state=installed
+    with_items:
+      - bash-completion
+      - curl
+      - bind-utils
+      - fail2ban
+      - htop
+      - iotop
+      - xz-devel
+      - pcre-devel
+      - openssl
+      - pkgconfig
+      - vim
+      - zlib-devel
+      - yum
+      - git
+- include : jenkins.yml
+- include : jmxtrans.yml
+- include : graphite.yml
+- include : diamond.yml
+- include : maven.yml

@@ -1,0 +1,14 @@
+---
+# vagrant.yml
+- hosts: all
+  user: vagrant
+  sudo: True
+  tasks:
+  - name: Create archive directory
+    file: path=/home/vagrant/archives owner=vagrant group=vagrant state=directory
+  - name: Download maven
+    get_url: url="http://apache.websitebeheerjd.nl/maven/maven-3/3.1.1/binaries/apache-maven-3.1.1-bin.tar.gz" dest="/home/vagrant/archives"
+  - name: Install maven
+    command: tar xzvf /home/vagrant/archives/apache-maven-3.1.1-bin.tar.gz creates=/opt/maven chdir=/opt/  
+  - name: Create link to maven
+    file: path=/opt/maven src=/opt/apache-maven-3.1.1/ state=link

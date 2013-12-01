@@ -1,0 +1,29 @@
+- hosts: all
+  vars:
+    graphite_host: localhost
+  user: vagrant
+  sudo : yes
+  tasks:
+    - name : Install packages
+      yum : name={{item}} state=present enablerepo=epel
+      with_items :
+        - python-pip
+        - gcc
+        - python-devel
+    - name : Install Diamond with Pip
+      pip : name={{item}}
+      with_items:
+        - diamond
+    - name : Create Diamond log directory
+      file : path=/var/log/diamond/ state=directory
+    - name : Create diamond.conf file
+      template: src=diamond/diamond.conf dest=/etc/diamond/diamond.conf
+      notify :
+        - Restart Diamond
+    - name : Create init script
+      copy : src=diamond/diamond-init dest=/etc/init.d/diamond mode=755
+      notify :
+        - Restart Diamond
+  handlers:
+    - name : Restart Diamond
+      service : name=diamond state=restarted enabled=true

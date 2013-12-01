@@ -1,0 +1,12 @@
+---
+# vagrant.yml
+- hosts: all
+  user: vagrant
+  sudo: True
+  tasks:
+  - name: Create archive directory
+    file: path=/home/vagrant/archives owner=vagrant group=vagrant state=directory
+  - name: Download rpm jmxtrans
+    get_url: url="https://github.com/downloads/jmxtrans/jmxtrans/jmxtrans-20121016.145842.6a28c97fbb-0.noarch.rpm" dest="/home/vagrant/archives"
+  - name: Install jmxtrans rpm
+    yum: name=/home/vagrant/archives/jmxtrans-20121016.145842.6a28c97fbb-0.noarch.rpm state=present    
