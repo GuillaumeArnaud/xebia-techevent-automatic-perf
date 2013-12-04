@@ -4,7 +4,7 @@
   hosts : localhost
   connection : local
   vars:
-    - keyname: garnaud
+    - keyname: gatling-gar
     - count : 1
     - instance_names:
       - techevents-perf
@@ -19,13 +19,13 @@
       local_action: ec2 keypair={{keyname}} group={{group}} instance_type={{instance_type}} image={{ami}} wait=true ec2_url={{ec2_url}} region={{region}} count={{count}}
       register: ec2
     - name : Set EC2 tags
-      local_action: ec2_tag ec2_url={{ec2_url}} region={{region}} resource={{item[0]}} state=present
+      local_action: ec2_tag ec2_url={{ec2_url}} region={{region}} resource={{ item.0 }} state=present
+      args:
+        tags:
+          Name: "{{ item.1 }}"
       with_together:
         - ec2.instance_ids
         - instance_names
-      args:
-        tags:
-          Name: "{{item[1]}}"
     - name: Record Ansible Route53 DNS
       local_action : route53 command=create zone={{dns_zone}} record={{item[1]}}.{{dns_zone}} type=CNAME ttl=300 overwrite=yes value={{item[0].public_dns_name}}
       when : dns_zone is defined

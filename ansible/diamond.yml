@@ -1,7 +1,7 @@
-- hosts: all
+- hosts: graphite
   vars:
     graphite_host: localhost
-  user: ec2_user
+  user: ec2-user
   sudo : yes
   tasks:
     - name : Install packages
