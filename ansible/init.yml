@@ -1,11 +1,12 @@
----
-# vagrant.yml
-- hosts: '{{ host }}'
-  user: '{{ user }}'
-  sudo: True
+- hosts: 
+  - controller
+  - webapp
+  vars:
+  user: "{{ user }}"
+  sudo : yes
   tasks:
-#  - name: Update APT package cache
-#    apt: update_cache=yes
+  - name: Download epel rpm
+    yum: name=http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm state=present
   - name: Install packages
     yum: name=$item state=installed
     with_items:

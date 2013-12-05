@@ -1,6 +1,6 @@
 ---
 # graphite.yaml
-- hosts: '{{ host }}'
+- hosts: controller
   user: '{{ user }}'
   sudo : True
   tasks:

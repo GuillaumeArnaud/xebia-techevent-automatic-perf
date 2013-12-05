@@ -1,7 +1,6 @@
-- hosts: {{ host }}
+- hosts: "webapp"
   vars:
-    graphite_host: localhost
-  user: {{ user }}
+  user: "{{ user }}"
   sudo : yes
   tasks:
     - name : Install packages

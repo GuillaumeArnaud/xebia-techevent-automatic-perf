@@ -1,6 +1,6 @@
 ---
 # vagrant.yml
-- hosts: '{{ host }}'
+- hosts: controller
   user: '{{ user }}'
   sudo: True
   tasks:
@@ -22,10 +22,10 @@
     get_url: url="https://updates.jenkins-ci.org/download/plugins/git/2.0/git.hpi" dest="/var/lib/jenkins/plugins/"
   - name: Change git plugin owner
     file: path=/var/lib/jenkins/plugins/git.hpi owner=jenkins group=jenkins
-  - name: Install jenkins cli
-    get_url: url=http://localhost:8080/jnlpJars/jenkins-cli.jar dest=/var/lib/jenkins/ 
-  - name: Change jenkins cli owner
-    file: path=/var/lib/jenkins/jenkins-cli.jar owner=jenkins group=jenkins
+#  - name: Install jenkins cli
+#    get_url: url=http://localhost:8080/jnlpJars/jenkins-cli.jar dest=/var/lib/jenkins/ 
+#  - name: Change jenkins cli owner
+#    file: path=/var/lib/jenkins/jenkins-cli.jar owner=jenkins group=jenkins
   - name: Install jenkins
     yum: name=jenkins state=installed
     notify:
