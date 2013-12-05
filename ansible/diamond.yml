@@ -1,11 +1,11 @@
-- hosts: graphite
+- hosts: {{ host }}
   vars:
     graphite_host: localhost
-  user: ec2-user
+  user: {{ user }}
   sudo : yes
   tasks:
     - name : Install packages
-      yum : name={{item}} state=present enablerepo=epel
+      yum : name={{ item }} state=present enablerepo=epel
       with_items :
         - python-pip
         - gcc

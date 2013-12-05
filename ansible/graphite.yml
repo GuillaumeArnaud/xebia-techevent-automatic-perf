@@ -1,7 +1,7 @@
 ---
 # graphite.yaml
-- hosts: all
-  user: vagrant
+- hosts: '{{ host }}'
+  user: '{{ user }}'
   sudo : True
   tasks:
     - name : Install packages

@@ -1,7 +1,7 @@
 ---
 # vagrant.yml
-- hosts: all
-  user: vagrant
+- hosts: '{{ host }}'
+  user: '{{ user }}'
   sudo: True
   tasks:
 #  - name: Update APT package cache
@@ -23,8 +23,3 @@
       - zlib-devel
       - yum
       - git
-- include : jenkins.yml
-- include : jmxtrans.yml
-- include : graphite.yml
-- include : diamond.yml
-- include : maven.yml
