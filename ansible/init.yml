@@ -10,7 +10,6 @@
   - name: Install packages
     yum: name=$item state=installed
     with_items:
-      - bash-completion
       - curl
       - bind-utils
       - fail2ban

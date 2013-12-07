@@ -18,7 +18,7 @@
         - python-pip
         - gcc
         - python-devel
-        - bitmap-fonts-compat
+#        - bitmap-fonts-compat
     - name : Install Graphite with Pip
       pip : name={{item}}
       with_items:
