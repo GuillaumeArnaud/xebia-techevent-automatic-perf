@@ -1,0 +1,72 @@
+---
+# graphite.yaml
+- hosts: controller
+  user: '{{ user }}'
+  sudo : True
+  tasks:
+    - name : Install packages
+      yum : name={{item}} state=present enablerepo=epel
+      with_items :
+        - htop
+        - django-tagging
+        - Django
+        - python-zope-interface
+        - pycairo
+        - python-twisted
+        - httpd
+        - mod_wsgi
+        - python-pip
+        - gcc
+        - python-devel
+#        - bitmap-fonts-compat
+    - name : Install Graphite with Pip
+      pip : name={{item}}
+      with_items:
+        - whisper
+        - carbon
+        - graphite-web
+        - daemonize
+    - name : Install Custom Twisted
+      pip : name=Twisted version=11.1.0
+    - name : Copy restart script
+      copy : src=graphite/carbon-cache-restart.sh dest=/opt/graphite/bin/carbon-cache-restart.sh mode=755
+      notify:
+        - Restart carbon
+    - name : Install carbon conf file
+      copy : src=graphite/carbon.conf dest=/opt/graphite/conf/carbon.conf
+      notify:
+        - Restart carbon
+    - name : Install storage-schemas conf file
+      copy : src=graphite/storage-schemas.conf dest=/opt/graphite/conf/storage-schemas.conf
+      notify:
+        - Restart carbon
+    - name : Remove wsgi.conf
+      file : path=/etc/httpd/conf.d/wsgi.conf state=absent
+    - name : Install Vhost apache conf file
+      copy : src=graphite/graphite-vhost.conf dest=/etc/httpd/conf.d/vhost-graphite.conf
+      notify :
+        - Chown apache
+        - Restart Apache
+    - name : Install graphite.wsgi file
+      copy : src=graphite/graphite.wsgi dest=/opt/graphite/conf/graphite.wsgi
+      notify :
+        - Chown apache
+        - Restart Apache
+    - name : Install local_settings.py file
+      copy : src=graphite/local_settings.py dest=/opt/graphite/webapp/graphite/local_settings.py
+      notify :
+        - Sync DB
+        - Chown apache
+        - Restart Apache
+  handlers:
+    - name : Restart carbon
+      command : /opt/graphite/bin/carbon-cache-restart.sh
+    - name : Sync DB
+      command : python manage.py syncdb --noinput chdir=/opt/graphite/webapp/graphite
+    - name : Chown apache
+      command : chown -R apache:apache /opt/graphite/storage/
+    - name : Restart Apache
+      service: name=httpd state=restarted enabled=true
+      notify : Reload Apache
+    - name : Reload Apache # Second reload
+      service : name=httpd state=reloaded enabled=true

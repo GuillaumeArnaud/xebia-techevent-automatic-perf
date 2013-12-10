@@ -1,0 +1,9 @@
+- hosts: "controller"
+  vars:
+  user: "{{ user }}"
+  sudo : yes
+  tasks:
+    - name : create sources directory
+      file : path=/home/{{user}}/repos state=directory
+    - name : clone tiny project
+      git: repo=https://github.com/Willymontaz/tinyapp dest=/home/{{user}}/repos/tinyapp bare=yes

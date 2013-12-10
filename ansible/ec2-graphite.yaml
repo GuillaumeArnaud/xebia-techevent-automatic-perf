@@ -1,0 +1,52 @@
+---
+- name : EC2
+  gather_facts: False
+  hosts : localhost
+  connection : local
+  vars:
+    - keyname: gatling-gar
+    - count : 2
+    - instance_names:
+      - controller
+      - webapp
+    - instance_type: m1.small
+    - group : accept-all
+    - ami : ami-c7c0d6b3 # Amazon Linux
+    #- ami : ami-029f9476 # Centos 64 AMI
+    - ec2_url : ec2.eu-west-1.amazonaws.com
+    - region : eu-west-1
+  gather_facts: False
+  tasks:
+    - name : Create EC2 ansible instance(s)
+      local_action: ec2 keypair={{keyname}} group={{group}} instance_type={{instance_type}} image={{ami}} wait=true ec2_url={{ec2_url}} region={{region}} count={{count}}
+      register: ec2
+    - name : Set EC2 tags
+      local_action: ec2_tag ec2_url={{ec2_url}} region={{region}} resource={{ item.0 }} state=present
+      args:
+        tags:
+          Name: "{{ item.1 }}-{{ id }}"
+      with_together:
+        - ec2.instance_ids
+        - instance_names
+    - name: Record Ansible Route53 DNS
+      local_action : route53 command=create zone={{dns_zone}} record={{item[1]}}-{{id}}.{{dns_zone}} type=CNAME ttl=300 overwrite=yes value={{item[0].public_dns_name}}
+      when : dns_zone is defined
+      with_together:
+        - ec2.instances
+        - instance_names
+    - name: Wait for SSH
+      local_action: wait_for host={{item.public_dns_name}} port=22 delay=10 timeout=320 state=started
+      with_items: ec2.instances
+    - name : Add new instance to host
+      local_action : add_host name={{item[0].public_dns_name}} groups={{item.1}}
+      with_together: 
+        - ec2.instances
+        - instance_names
+- include : init.yml
+- include : diamond.yml
+- include : jenkins.yml
+- include : graphite.yml
+- include : jmxtrans.yml
+- include : maven.yml
+- include : tomcat.yml
+

@@ -1,0 +1,48 @@
+---
+# vagrant.yml
+- hosts: controller
+  user: '{{ user }}'
+  sudo: True
+  tasks:
+  - name: add user jenkins
+    user: name=jenkins
+  - name: Install jdk
+    yum: name=java-1.7.0-openjdk state=installed
+  - name: Install jdk (devel)
+    yum: name=java-1.7.0-openjdk-devel state=installed
+  - name: Add yum repo jenkins 
+    get_url: url="http://pkg.jenkins-ci.org/redhat/jenkins.repo" dest="/etc/yum.repos.d/jenkins.repo"
+  - name: Add rpm key for jenkins
+    rpm_key: state=present key=http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+  - name: Create /var/lib/jenkins/plugins
+    file: path=/var/lib/jenkins/plugins/ state=directory owner=jenkins group=jenkins mode=0755
+  - name: Copy maven configuration for jenkins
+    copy: src=jenkins/hudson.tasks.Maven.xml dest=/var/lib/jenkins/hudson.tasks.Maven.xml owner=jenkins
+  - name: Install git jenkins plugin
+    get_url: url="https://updates.jenkins-ci.org/download/plugins/git/2.0/git.hpi" dest="/var/lib/jenkins/plugins/"
+  - name: Change git plugin owner
+    file: path=/var/lib/jenkins/plugins/git.hpi owner=jenkins group=jenkins
+  - name: Install git-client jenkins plugin
+    get_url: url="https://updates.jenkins-ci.org/download/plugins/git-client/1.4.6/git-client.hpi" dest="/var/lib/jenkins/plugins/"
+  - name: Change git-client plugin owner
+    file: path=/var/lib/jenkins/plugins/git-client.hpi owner=jenkins group=jenkins
+  - name: Install maven jenkins plugin
+    get_url: url="https://updates.jenkins-ci.org/latest/maven-plugin.hpi" dest="/var/lib/jenkins/plugins/"
+  - name: Change maven-plugin owner
+    file: path=/var/lib/jenkins/plugins/maven-plugin.hpi owner=jenkins group=jenkins
+  - name: Install gatling plugin
+    get_url: url="https://updates.jenkins-ci.org/latest/gatling.hpi" dest="/var/lib/jenkins/plugins/"
+  - name: Change gatling plugin owner
+    file: path=/var/lib/jenkins/plugins/gatling.hpi owner=jenkins group=jenkins
+
+#  - name: Install jenkins cli
+#    get_url: url=http://localhost:8080/jnlpJars/jenkins-cli.jar dest=/var/lib/jenkins/ 
+#  - name: Change jenkins cli owner
+#    file: path=/var/lib/jenkins/jenkins-cli.jar owner=jenkins group=jenkins
+  - name: Install jenkins
+    yum: name=jenkins state=installed
+    notify:
+      - Restart jenkins
+  handlers:
+  - name: Restart jenkins
+    service: name=jenkins state=restarted
