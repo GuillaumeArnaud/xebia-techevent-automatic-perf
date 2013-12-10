@@ -1,0 +1,9 @@
+- hosts: 
+  - controller
+  vars:
+  user: "{{ user }}"
+  sudo : yes
+  tasks:
+- include: jenkins.yml
+- include: graphite.yml
+- include: maven.yml

@@ -1,0 +1,9 @@
+- hosts: 
+  - controller
+  - webapp
+  vars:
+  user: "{{ user }}"
+  sudo : yes
+  tasks:
+- include: tomcat.yml
+- include: diamond.yml
