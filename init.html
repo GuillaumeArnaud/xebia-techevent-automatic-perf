@@ -27,5 +27,8 @@
     <a href="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-git-gatling.png"><img src="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-git-gatling.png" width="300" height="200"/></a>
     <h4>Déployer le war et lancer le tir gatling</h4>
     <a href="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-build-gatling.png"><img src="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-build-gatling.png" width="300" height="200"/></a>
+<p>Le tir gatling se fait par l'intermédiaire du goal maven auquel on peut ajouter des paramètres, par exemple:<br>
+clean gatling:execute -Dgatling.simulationClass=MemoryConsumer -DdurationMinutes=2 -DusersPerSec=20 -Dhost=http://webapp-3.aws.xebiatechevent.info:8080/ -Dport=8080
+<p>
 </body>
 </html>
