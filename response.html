@@ -4,177 +4,177 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   </head>
   <body>
-
-import io.gatling.core.scenario.Simulation
-import io.gatling.core.Predef._
-import io.gatling.http.Predef._
-import io.gatling.jdbc.Predef._
-import scala.concurrent.duration._
-import bootstrap._
-import assertions._
-import scala.util.Random
-import scala.xml.{Node, XML, Elem}
-
-class Exercice1A extends Simulation{
-  
-  val scn = scenario("Exercice1A")
-            .exec(http("Exercice1A")
-              .get(Params.URL+"/slowfast"))
-  
-  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),
-                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))
-  
-  
-}
-
-class Exercice1B extends Simulation{
-  
-  val scn = scenario("Exercice1B")
-            .exec(http("Exercice1B")
-              .get(Params.URL+"/exercice1B"))
-  
-  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),
-                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))
-  
-  
-}
-
-class Exercice1C extends Simulation{
-  
-  val scn = scenario("Exercice1C")
-            .exec(http("Exercice1C")
-              .get(Params.URL+"/exercice1C"))
-  
-  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),
-                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))
-  
-  
-}
-
-class Exercice1D extends Simulation{
-  
-  val scn = scenario("Exercice1D")
-            .exec(http("Exercice1D")
-              .get(Params.URL+"/exercice1D"))
-  
-  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),
-                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))
-  
-  
-}
-
-class AutoFailer extends Simulation{
-  
-  val scn = scenario("AutoFailer")
-            .exec(
-                http("AutoFailRequest")
-                	.get(Params.URL+"/autofailer")
-                	.check(status.is(200))
-            )
-  
-  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),
-                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))
-  
-  
-}
-
-class AutoFailerWithout500 extends Simulation{
-  
-  val scn = scenario("AutoFailerWithout500")
-            .exec(
-                http("AutoFailRequest")
-                	.get(Params.URL+"/autofailer")
-                	.check(regex("Server Error").notExists)
-              )
-  
-  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),
-                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))
-  
-  
-}
-
-class CSVFeeder extends Simulation{
-  
-  val users = csv("users.csv").circular
-  
-  val scn = scenario("CSVFeeder")
-		  	.feed(users)
-            .exec(
-            		http("SlowFast")
-		              .get(Params.URL+"/slowfast")
-		              .queryParam("forename", "${forename}")
-		              .queryParam("lastname", "${lastname}")
-		              .check(regex("John").notExists)
-		              .check(regex("Doe").notExists)
-		         )
-  
-  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),
-                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))
-  
-  
-}
-
-class CustomFeeder extends Simulation{
-  
-  val speeds = new Feeder[String] {
-	
-	  private val RNG = new Random
-	
-	  override def hasNext = true
-	
-	  override def next: Map[String, String] = {
-	    val speed = if(RNG.nextBoolean()) "slow" else "fast";
-	    Map("speed" -> speed) 
-	  }
-  }
-  
-  val scn = scenario("CSVFeeder")
-		  	.feed(speeds)
-            .exec(
-            		http("SlowFast")
-		              .get(Params.URL+"/slowfast")
-		              .queryParam("speed", "${speed}")
-		         )
-  
-  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),
-                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))
-  
-  
-}
-
-class ComplexScenario extends Simulation{
-  val scn = scenario("SlowFastThenPiDigits")
-            .exec(
-            		http("SlowFastCo")
-		              .get(Params.URL+"/slowfast")
-		              .check(bodyString.saveAs("response"))
-		         )
-		    .exec(session => {
-		    		val response = session("response").as[String]
-		    		val xml = XML.loadString(response)
-		    		val digits = (xml \\ "digits").head.text
-		    		session.set("digits", digits)
-		    		}
-		    	  )
-		    .exec(session => {
-		    		http("Pi")
-		    		  .get(Params.URL+"/pi")
-		    		  .queryParam("digits", "${digits}")
-		    		  .check(regex(".*").count.is(session("digits").as[String].toInt -2))
-		    		  session 
-		    		  }
-		         )
-		         
-	setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),
-                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))
-}
-
-object Params {
-  
-  val URL = "http://"+System.getProperty("host", "localhost")+":"+System.getProperty("port", "8080")+"/tinyapp"
-  val durationMinutes = System.getProperty("durationMinutes", "2").toInt
-  val usersPerSec = System.getProperty("usersPerSec", "20").toDouble
-  
-}
+<br>
+import io.gatling.core.scenario.Simulation<br>
+import io.gatling.core.Predef._<br>
+import io.gatling.http.Predef._<br>
+import io.gatling.jdbc.Predef._<br>
+import scala.concurrent.duration._<br>
+import bootstrap._<br>
+import assertions._<br>
+import scala.util.Random<br>
+import scala.xml.{Node, XML, Elem}<br>
+<br>
+class Exercice1A extends Simulation{<br>
+  <br>
+  val scn = scenario("Exercice1A")<br>
+            .exec(http("Exercice1A")<br>
+              .get(Params.URL+"/slowfast"))<br>
+  <br>
+  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),<br>
+                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))<br>
+  <br>
+  <br>
+}<br>
+<br>
+class Exercice1B extends Simulation{<br>
+  <br>
+  val scn = scenario("Exercice1B")<br>
+            .exec(http("Exercice1B")<br>
+              .get(Params.URL+"/exercice1B"))<br>
+  <br>
+  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),<br>
+                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))<br>
+  <br>
+  <br>
+}<br>
+<br>
+class Exercice1C extends Simulation{<br>
+  <br>
+  val scn = scenario("Exercice1C")<br>
+            .exec(http("Exercice1C")<br>
+              .get(Params.URL+"/exercice1C"))<br>
+  <br>
+  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),<br>
+                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))<br>
+  <br>
+  <br>
+}<br>
+<br>
+class Exercice1D extends Simulation{<br>
+  <br>
+  val scn = scenario("Exercice1D")<br>
+            .exec(http("Exercice1D")<br>
+              .get(Params.URL+"/exercice1D"))<br>
+  <br>
+  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),<br>
+                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))<br>
+  <br>
+  <br>
+}<br>
+<br>
+class AutoFailer extends Simulation{<br>
+  <br>
+  val scn = scenario("AutoFailer")<br>
+            .exec(<br>
+                http("AutoFailRequest")<br>
+                	.get(Params.URL+"/autofailer")<br>
+                	.check(status.is(200))<br>
+            )<br>
+  <br>
+  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),<br>
+                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))<br>
+  <br>
+  <br>
+}<br>
+<br>
+class AutoFailerWithout500 extends Simulation{<br>
+  <br>
+  val scn = scenario("AutoFailerWithout500")<br>
+            .exec(<br>
+                http("AutoFailRequest")<br>
+                	.get(Params.URL+"/autofailer")<br>
+                	.check(regex("Server Error").notExists)<br>
+              )<br>
+  <br>
+  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),<br>
+                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))<br>
+  <br>
+  <br>
+}<br>
+<br>
+class CSVFeeder extends Simulation{<br>
+  <br>
+  val users = csv("users.csv").circular<br>
+  <br>
+  val scn = scenario("CSVFeeder")<br>
+		  	.feed(users)<br>
+            .exec(<br>
+            		http("SlowFast")<br>
+		              .get(Params.URL+"/slowfast")<br>
+		              .queryParam("forename", "${forename}")<br>
+		              .queryParam("lastname", "${lastname}")<br>
+		              .check(regex("John").notExists)<br>
+		              .check(regex("Doe").notExists)<br>
+		         )<br>
+  <br>
+  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),<br>
+                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))<br>
+  <br>
+  <br>
+}<br>
+<br>
+class CustomFeeder extends Simulation{<br>
+  <br>
+  val speeds = new Feeder[String] {<br>
+	<br>
+	  private val RNG = new Random<br>
+	<br>
+	  override def hasNext = true<br>
+	<br>
+	  override def next: Map[String, String] = {<br>
+	    val speed = if(RNG.nextBoolean()) "slow" else "fast";<br>
+	    Map("speed" -> speed) <br>
+	  }<br>
+  }<br>
+  <br>
+  val scn = scenario("CSVFeeder")<br>
+		  	.feed(speeds)<br>
+            .exec(<br>
+            		http("SlowFast")<br>
+		              .get(Params.URL+"/slowfast")<br>
+		              .queryParam("speed", "${speed}")<br>
+		         )<br>
+  <br>
+  setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),<br>
+                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))<br>
+  <br>
+  <br>
+}<br>
+<br>
+class ComplexScenario extends Simulation{<br>
+  val scn = scenario("SlowFastThenPiDigits")<br>
+            .exec(<br>
+            		http("SlowFastCo")<br>
+		              .get(Params.URL+"/slowfast")<br>
+		              .check(bodyString.saveAs("response"))<br>
+		         )<br>
+		    .exec(session => {<br>
+		    		val response = session("response").as[String]<br>
+		    		val xml = XML.loadString(response)<br>
+		    		val digits = (xml \\ "digits").head.text<br>
+		    		session.set("digits", digits)<br>
+		    		}<br>
+		    	  )<br>
+		    .exec(session => {<br>
+		    		http("Pi")<br>
+		    		  .get(Params.URL+"/pi")<br>
+		    		  .queryParam("digits", "${digits}")<br>
+		    		  .check(regex(".*").count.is(session("digits").as[String].toInt -2))<br>
+		    		  session <br>
+		    		  }<br>
+		         )<br>
+		         <br>
+	setUp(scn.inject(ramp(Params.usersPerSec users) over (5 seconds),<br>
+                 constantRate(Params.usersPerSec usersPerSec) during (Params.durationMinutes minutes)))<br>
+}<br>
+<br>
+object Params {<br>
+  <br>
+  val URL = "http://"+System.getProperty("host", "localhost")+":"+System.getProperty("port", "8080")+"/tinyapp"<br>
+  val durationMinutes = System.getProperty("durationMinutes", "2").toInt<br>
+  val usersPerSec = System.getProperty("usersPerSec", "20").toDouble<br>
+  <br>
+}<br>
 </body>
 </html>
