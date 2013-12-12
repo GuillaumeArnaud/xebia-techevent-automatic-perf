@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  </head>
+  <body>
+    <h1>Automatisation des tests de performance</h1>
+    <h2>Commandes ssh</h2>
+    <p>Télécharger la clé ssh <a href="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/files/gatling-gar.pem">gatling-gar.pem</a>.</p>
+    <p>Connexion sur le controller (remplacer l'étoile par votre id):<br> $ ssh -i gatling-gar.pem ec2-user@controller-*.aws.xebiatechevent.info</p>
+    <p>Connexion sur la webapp (remplacer l'étoile par votre id):<br> $ ssh -i gatling-gar.pem ec2-user@controller-*.aws.xebiatechevent.info</p>
+    <p>Cloner le repo de sources en local (remplacer l'étoile par votre id): <br>
+        $ ssh-agent<br>
+        $ ssh-add /your/path/gatling-gar.pem<br>
+        $ git clone ssh://ec2-user@controller-3.aws.xebiatechevent.info/home/ec2-user/repos/tinyapp<br>
+    </p>
+    
+    <h2>Premier job jenkins: construction du war</h2>
+<p>Se connecter sur le controller (http://controller-*.aws.xebiatechevent.info)</p>
+    <h4>Créer un job jenkins pour builder le war tomcat</h4>
+    <a href="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-git.png"><img src="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-git.png" width="300" height="200"/></a>
+    <h4>Configurer le build maven</h4>
+    <a href="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-build.png"><img src="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-build.png" width="300" height="200"/></a>
+    <h4>Lancer le premier build maven</h4>
+    <h2>Deuxième job jenkins: déploie le war sur tomcat et tir gatling</h2>
+    <h4>Récupérer les sources</h4>
+    <a href="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-git-gatling.png"><img src="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-git-gatling.png" width="300" height="200"/></a>
+    <h4>Déployer le war et lancer le tir gatling</h4>
+    <a href="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-build-gatling.png"><img src="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-build-gatling.png" width="300" height="200"/></a>
+</body>
+</html>
