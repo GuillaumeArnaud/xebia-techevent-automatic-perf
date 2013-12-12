@@ -18,6 +18,8 @@
     command: sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-1.7.0-openjdk.x86_64/bin/javac 1
   - name: Set javac 7 by default
     command: sudo update-alternatives --set javac /usr/lib/jvm/java-1.7.0-openjdk.x86_64/bin/javac 
+  - name: Change jps path
+    file: path=/usr/bin/jps src=/usr/bin/jps7 state=link
   - name: Add yum repo jenkins 
     get_url: url="http://pkg.jenkins-ci.org/redhat/jenkins.repo" dest="/etc/yum.repos.d/jenkins.repo"
   - name: Add rpm key for jenkins
@@ -25,7 +27,7 @@
   - name: Create .ssh directory
     file: path=/home/jenkins/.ssh/ state=directory owner=jenkins group=jenkins
   - name: Copy pem key
-    copy: src=ssh/gatling-gar.pem dest=/home/jenkins/.ssh/gatling-gar.pem owner=jenkins group=jenkins chmod=400
+    copy: src=ssh/gatling-gar.pem dest=/home/jenkins/.ssh/gatling-gar.pem owner=jenkins group=jenkins mode=400
   - name: Copy deploy.sh
     template: src=files/deploy.sh dest=/home/jenkins/deploy.sh owner=jenkins group=jenkins 
   - name: chmod deploy.sh

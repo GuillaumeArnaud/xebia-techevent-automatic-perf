@@ -21,8 +21,5 @@
       file: path=/opt/apache-tomcat/tomcat8 state=link src=/opt/apache-tomcat/apache-tomcat-8.0.0-RC5
     - name: Copy catalina_base directory
       copy: src=./files/tomcat/ dest=/home/{{user}} 
-      notify:
-        - restart tomcat
-  handlers:
-    - name: restart tomcat
-      shell: /home/{{user}}/restart.sh
+    - name: start tomcat
+      shell: /home/{{user}}/startup.sh

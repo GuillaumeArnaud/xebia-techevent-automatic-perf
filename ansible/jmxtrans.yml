@@ -1,6 +1,6 @@
 ---
 # vagrant.yml
-- hosts: webapp
+- hosts: controller
   user: '{{ user }}'
   sudo: True
   tasks:
