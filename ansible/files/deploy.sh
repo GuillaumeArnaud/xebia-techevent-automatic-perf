@@ -1,4 +1,4 @@
-TOMCAT_IP="webapp-3.aws.xebiatechevent.info"
+TOMCAT_IP="webapp-{{id}}.aws.xebiatechevent.info"
 CATALINA_BASE="/home/ec2-user/catalina_base"
 ssh -oStrictHostKeyChecking=no -i /home/jenkins/.ssh/gatling-gar.pem ec2-user@$TOMCAT_IP '/home/ec2-user/shutdown.sh'
 ssh -oStrictHostKeyChecking=no -i /home/jenkins/.ssh/gatling-gar.pem ec2-user@$TOMCAT_IP "rm -rf $CATALINA_BASE/webapps/*;rm -rf $CATALINA_BASE/temp/*"
