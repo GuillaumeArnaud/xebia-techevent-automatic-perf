@@ -10,20 +10,36 @@
     yum: name=java-1.7.0-openjdk state=installed
   - name: Install jdk (devel)
     yum: name=java-1.7.0-openjdk-devel state=installed
+  - name: Install java 7 by default
+    command: sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-1.7.0-openjdk.x86_64/bin/java 1
+  - name: Set java 7 by default
+    command: sudo update-alternatives --set java /usr/lib/jvm/java-1.7.0-openjdk.x86_64/bin/java
+  - name: Install javac 7 by default
+    command: sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-1.7.0-openjdk.x86_64/bin/javac 1
+  - name: Set javac 7 by default
+    command: sudo update-alternatives --set javac /usr/lib/jvm/java-1.7.0-openjdk.x86_64/bin/javac 
   - name: Add yum repo jenkins 
     get_url: url="http://pkg.jenkins-ci.org/redhat/jenkins.repo" dest="/etc/yum.repos.d/jenkins.repo"
   - name: Add rpm key for jenkins
     rpm_key: state=present key=http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+  - name: Create .ssh directory
+    file: path=/home/jenkins/.ssh/ state=directory owner=jenkins group=jenkins
+  - name: Copy pem key
+    copy: src=ssh/gatling-gar.pem dest=/home/jenkins/.ssh/gatling-gar.pem owner=jenkins group=jenkins
+  - name: Copy deploy.sh
+    copy: src=files/deploy.sh dest=/home/jenkins/deploy.sh owner=jenkins group=jenkins 
+  - name: chmod deploy.sh
+    file: path=/home/jenkins/deploy.sh owner=jenkins group=jenkins mode=777
   - name: Create /var/lib/jenkins/plugins
     file: path=/var/lib/jenkins/plugins/ state=directory owner=jenkins group=jenkins mode=0755
   - name: Copy maven configuration for jenkins
-    copy: src=jenkins/hudson.tasks.Maven.xml dest=/var/lib/jenkins/hudson.tasks.Maven.xml owner=jenkins
+    copy: src=jenkins/hudson.tasks.Maven.xml dest=/var/lib/jenkins/hudson.tasks.Maven.xml owner=jenkins group=jenkins
   - name: Install git jenkins plugin
-    get_url: url="https://updates.jenkins-ci.org/download/plugins/git/2.0/git.hpi" dest="/var/lib/jenkins/plugins/"
+    get_url: url="https://updates.jenkins-ci.org/latest/git.hpi" dest="/var/lib/jenkins/plugins/"
   - name: Change git plugin owner
     file: path=/var/lib/jenkins/plugins/git.hpi owner=jenkins group=jenkins
   - name: Install git-client jenkins plugin
-    get_url: url="https://updates.jenkins-ci.org/download/plugins/git-client/1.4.6/git-client.hpi" dest="/var/lib/jenkins/plugins/"
+    get_url: url="https://updates.jenkins-ci.org/latest/git-client.hpi" dest="/var/lib/jenkins/plugins/"
   - name: Change git-client plugin owner
     file: path=/var/lib/jenkins/plugins/git-client.hpi owner=jenkins group=jenkins
   - name: Install maven jenkins plugin
@@ -34,6 +50,10 @@
     get_url: url="https://updates.jenkins-ci.org/latest/gatling.hpi" dest="/var/lib/jenkins/plugins/"
   - name: Change gatling plugin owner
     file: path=/var/lib/jenkins/plugins/gatling.hpi owner=jenkins group=jenkins
+  - name: Install scm-api plugin
+    get_url: url="https://updates.jenkins-ci.org/latest/scm-api.hpi" dest="/var/lib/jenkins/plugins/"
+  - name: Change owner scm-api
+    file: path=/var/lib/jenkins/plugins/scm-api.hpi owner=jenkins group=jenkins
 
 #  - name: Install jenkins cli
 #    get_url: url=http://localhost:8080/jnlpJars/jenkins-cli.jar dest=/var/lib/jenkins/ 

@@ -10,6 +10,7 @@
   - name: Install packages
     yum: name=$item state=installed
     with_items:
+      - telnet
       - curl
       - bind-utils
       - fail2ban

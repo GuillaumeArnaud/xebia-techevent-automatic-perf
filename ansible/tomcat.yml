@@ -6,6 +6,8 @@
     - name: Install OpenJDK 7
       yum: name=java-1.7.0-openjdk-devel state=latest
       sudo: yes
+    - name: Set java 7 by default
+      command: sudo update-alternatives --install /usr/bin/java java "/usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java" 1
     - name: Create archives directory
       file: path=/home/{{user}}/archives state=directory owner={{user}} group={{user}}
     - name: Download Tomcat 8
@@ -17,8 +19,10 @@
       command: /bin/tar xzf /home/{{user}}/archives/apache-tomcat-8.0.0-RC5.tar.gz -C /opt/apache-tomcat creates=/opt/apache-tomcat/apache-tomcat-8.0.0-RC5
     - name: Create Tomcat symlink
       file: path=/opt/apache-tomcat/tomcat8 state=link src=/opt/apache-tomcat/apache-tomcat-8.0.0-RC5
+    - name: Copy catalina_base directory
+      copy: src=./files/tomcat/ dest=/home/{{user}} 
       notify:
-        - start tomcat
+        - restart tomcat
   handlers:
-    - name: start tomcat
-      shell: /opt/apache-tomcat/tomcat8/bin/shutdown.sh && /opt/apache-tomcat/tomcat8/bin/startup.sh
+    - name: restart tomcat
+      shell: /home/{{user}}/restart.sh

@@ -4,6 +4,7 @@
   hosts : localhost
   connection : local
   vars:
+    - dns_zone: aws.xebiatechevent.info
     - keyname: gatling-gar
     - count : 2
     - instance_names:
@@ -49,4 +50,5 @@
 - include : jmxtrans.yml
 - include : maven.yml
 - include : tomcat.yml
+- include : gitclone.yml
 
