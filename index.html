@@ -6,7 +6,16 @@
   <body>
     <h1>Automatisation des tests de performance</h1>
     <h2>Commandes ssh</h2>
-    <h2>Premier job jenkins: construire du war</h2>
+    <p>Télécharger la clé ssh <a href="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/files/gatling-gar.pem">pem</a>.</p>
+    <p>Connexion sur le controller (remplacer l'étoile par votre id): $ ssh -i gatling-gar.pem ec2-user@controller-*.aws.xebiatechevent.info</p>
+    <p>Connexion sur la webapp (remplacer l'étoile par votre id): $ ssh -i gatling-gar.pem ec2-user@controller-*.aws.xebiatechevent.info</p>
+    <p>Cloner le repo de sources en local (remplacer l'étoile par votre id): <br>
+        $ ssh-agent<br>
+        $ ssh-add <path>/gatling-gar.pem<br>
+        $ git clone <br>
+    </p>
+    
+    <h2>Premier job jenkins: construction du war</h2>
 <p>Se connecter sur le controller (http://controller-*.aws.xebiatechevent.info)</p>
     <h4>Créer un job jenkins pour builder le war tomcat</h4>
     <a href="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-git.png"><img src="https://raw.github.com/GuillaumeArnaud/xebia-techevent-automatic-perf/gh-pages/img/config-git.png" width="300" height="200"/></a>
