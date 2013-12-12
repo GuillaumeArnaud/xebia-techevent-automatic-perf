@@ -24,40 +24,43 @@
    répertoire de conf (on y dépose les .json): $ ll /var/lib/jmxtrans <br>
 </p>
     <h2>Exercices</h2>
+<h3>Exercice 1</h3>
 
-Exercice 1<br>
+<p>Le but de cet exercice est de réaliser notre premier tir de perf sur tinyapp. <br>
+Nous allons découvrir l'écriture d'un scénario simple et visualiser le résultat sur graphite.<br>
+Nous ferons évoluer notre code pour injecter des paramètres pour nos simulations depuis Jenkins<br>
+Nous testerons ensuite quelques servlet et vous devrez trouver grâce à Graphite ce qui pose problème (vous avez accès aux sources, on vous conseille de jouez le jeu !)<br>
+Enfin nous découvrirons une mécanique simple pour gérer les erreurs.<br>
+</p>
 <br>
-Scénario simple<br>
--> SlowFast sans paramètre<br>
--> Définir les bornes d'acceptance de gatling<br>
+Quelques ressources utiles :<br>
+https://github.com/excilys/gatling/wiki/First-Steps-with-Gatling<br>
+https://github.com/excilys/gatling/wiki/Gatling-2#wiki-inject<br>
+https://github.com/excilys/gatling/wiki/Checks#wiki-checks<br>
+https://github.com/excilys/gatling/wiki/Checks#wiki-verifying<br>
+http://graphite.readthedocs.org/en/latest/functions.html<br>
+
+
+<h3>Exercice 2</h3>
+
+<p> Lors de cet exercice nous allons apprendre à utiliser des feeder pour injecter des données dans nos tests
+Nous allons ensuite créer notre propre feeder</p>
+ 
+Quelques ressources utiles :<br>
+https://github.com/excilys/gatling/wiki/Feeders#wiki-fileParsers<br>
+https://github.com/excilys/gatling/wiki/Feeders#wiki-queue<br>
+https://github.com/excilys/gatling/wiki/HTTP#wiki-query-params<br>
 <br>
-Visualiser les résultats<br>
--> SlowFast<br>
-    -> Faire différent type de scénario (durée, rampe, nombre de users, etc...) et regarder le nombre de users évoluer sur graphite<br>
--> IOConsumer<br>
--> CPUConsumer<br>
--> MemoryConsumer<br>
-    -> Voir les métriques Graphite<br>
-    <br>
-Gestion des erreurs<br>
--> Autofailer avec une proba de fail > 0<br>
--> Autofailer qui ne renvoie pas d'erreur 500 (cas de SOAP)<br>
-<br>
-Exercice 2<br>
-<br>
-Utiliser un feeder simple<br>
--> Slow Fast avec le paramètre fast=true de temps en temps<br>
-<br>
-Utiliser un feeder custom<br>
--> SlowFast avec deux fichiers séparés (mettre à jour SlowFast pour gérer plusieurs paramètres arbitraires)<br>
-<br>
-Exercice 3<br>
-<br>
-Scénario complexe<br>
--> Faire SlowFast<br>
--> Récupérer le retour (un nombre)<br>
--> Calculer PI avec ce nombre de décimales<br>
--> Vérifier que le résultat comporte bien le bon nombre de décimale<br>
-<br>
+
+<h3>Exercice 3</h3>
+
+Nous allons mettre en oeuvre un scénario plus complexe :<br>
+Nous appelerons un premier service et utiliserons des informations de la réponse http pour réaliser un appel à un second service<br>
+Nous découvrirons ainsi la session Gatling, le parsing XML et mettrons en oeuvre un check un peu moins "direct" que les précédents.<br>
+
+Quelques ressources utiles :<br>
+https://github.com/excilys/gatling/wiki/Session<br>
+
+
 </body>
 </html>
