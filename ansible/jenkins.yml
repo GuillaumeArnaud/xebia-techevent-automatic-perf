@@ -27,7 +27,7 @@
   - name: Create .ssh directory
     file: path=/home/jenkins/.ssh/ state=directory owner=jenkins group=jenkins
   - name: Copy pem key
-    copy: src=ssh/gatling-gar.pem dest=/home/jenkins/.ssh/gatling-gar.pem owner=jenkins group=jenkins mode=400
+    copy: src=ssh/gatling-gar.pem dest=/home/jenkins/.ssh/gatling-gar.pem owner=jenkins group=jenkins mode=0400
   - name: Copy deploy.sh
     template: src=files/deploy.sh dest=/home/jenkins/deploy.sh owner=jenkins group=jenkins 
   - name: chmod deploy.sh

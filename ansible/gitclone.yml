@@ -6,7 +6,7 @@
     - name : create sources directory
       file : path=/home/jenkins/repos state=directory owner=jenkins group=jenkins
     - name : clone tiny project
-      git: repo=https://github.com/Willymontaz/tinyapp dest=/home/jenkins/repos/tinyapp bare=yes
+      git: repo=https://github.com/Willymontaz/tinyapp dest=/home/jenkins/repos/tinyapp-norep bare=yes
     - name : change owner to jenkins
       command : chown -R jenkins:jenkins /home/jenkins/repos
     - name : chmod for full access on jenkins repos
