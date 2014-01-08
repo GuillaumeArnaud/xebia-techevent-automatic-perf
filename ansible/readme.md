@@ -4,6 +4,7 @@ Commandes
 EC2
 ---
 
+
 $ run.sh 1
 
 Instancie 2 vms ec2 qui auront pour identifiant (tag) webapp1 et controller1.
@@ -20,4 +21,4 @@ VMs
 Excercices
 ----------
 
-voir [ici|http://guillaumearnaud.github.io/xebia-techevent-automatic-perf/].
+voir ici: http://guillaumearnaud.github.io/xebia-techevent-automatic-perf/
